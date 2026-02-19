@@ -1,0 +1,2 @@
+Elevate Labs is providing this internship program to help students gain practical knowledge and hands-on experience through structured tasks and guided learning. As part of the internship, participants are required to
+complete assigned tasks, build projects, and regularly submit their work through this repository. The program is designed to enhance technical skills, improve problem-solving abilities, and provide real-worldexposur
