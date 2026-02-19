@@ -1,0 +1,103 @@
+This project focuses on analyzing an Amazon product review dataset using Python and the Pandas library. The objective of the project is to extract meaningful insights from structured CSV data. The dataset contains 
+information such as product names, ratings, review titles, review content, and product links. The analysis involves loading the dataset, cleaning and processing the rating values, and performing exploratory data 
+analysis using functions like groupby(), value_counts(), and statistical summaries. Various visualizations such as bar charts are generated using Matplotlib to understand rating distribution, identify the most
+reviewed products, and analyze customer feedback patterns. The project demonstrates the ability to work with real-world CSV data, perform data cleaning, generate insights, and visualize results effectively using Python.
+
+
+CODE:
+# ==========================================
+# TASK 5 - Data Analysis on amazon.csv
+# (Amazon Review Dataset Analysis)
+# ==========================================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1️⃣ Load Dataset
+df = pd.read_csv("/content/amazon.csv")
+
+print("First 5 Rows:")
+print(df.head())
+
+print("\nColumn Names:")
+print(df.columns)
+
+print("\nDataset Info:")
+print(df.info())
+
+# ------------------------------------
+# 2️⃣ Clean Rating Column (if needed)
+# ------------------------------------
+# Sometimes rating column may contain text like "4.3 out of 5 stars"
+if "rating" in df.columns:
+    df["rating"] = df["rating"].astype(str).str.extract(r'(\d+\.?\d*)')
+    df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
+
+# ------------------------------------
+# 3️⃣ Basic Statistics
+# ------------------------------------
+if "rating" in df.columns:
+    print("\nAverage Rating:", df["rating"].mean())
+    print("Maximum Rating:", df["rating"].max())
+    print("Minimum Rating:", df["rating"].min())
+
+# ------------------------------------
+# 4️⃣ Rating Distribution
+# ------------------------------------
+if "rating" in df.columns:
+    rating_counts = df["rating"].value_counts().sort_index()
+
+    print("\nRating Distribution:")
+    print(rating_counts)
+
+    plt.figure()
+    rating_counts.plot(kind="bar")
+    plt.title("Rating Distribution")
+    plt.xlabel("Rating")
+    plt.ylabel("Number of Reviews")
+    plt.show()
+
+# ------------------------------------
+# 5️⃣ Top 10 Most Reviewed Products
+# ------------------------------------
+if "product_name" in df.columns:
+    top_products = df["product_name"].value_counts().head(10)
+
+    print("\nTop 10 Most Reviewed Products:")
+    print(top_products)
+
+    plt.figure()
+    top_products.plot(kind="bar")
+    plt.title("Top 10 Most Reviewed Products")
+    plt.xlabel("Product")
+    plt.ylabel("Review Count")
+    plt.xticks(rotation=75)
+    plt.show()
+
+# ------------------------------------
+# 6️⃣ Most Common Review Titles
+# ------------------------------------
+if "review_title" in df.columns:
+    top_titles = df["review_title"].value_counts().head(10)
+
+    print("\nMost Common Review Titles:")
+    print(top_titles)
+
+# ------------------------------------
+# 7️⃣ Most Active Products (Review Count)
+# ------------------------------------
+if "product_link" in df.columns:
+    product_review_count = df.groupby("product_link").size().sort_values(ascending=False).head(10)
+
+    print("\nTop 10 Products by Review Count:")
+    print(product_review_count)
+
+    plt.figure()
+    product_review_count.plot(kind="bar")
+    plt.title("Top 10 Products by Review Count")
+    plt.xlabel("Product Link")
+    plt.ylabel("Number of Reviews")
+    plt.xticks(rotation=75)
+    plt.show()
+
+print("\nAnalysis Completed Successfully!")
